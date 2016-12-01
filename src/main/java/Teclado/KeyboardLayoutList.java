@@ -1,79 +1,65 @@
-
-package Teclado;
+package teclado;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- *
- *  Classe que guarda a lista dos layouts dos teclados e métodos referentes à essa lista, como: adicionar e procurar pelo nome do layout.
- * 
- *  @author marcella e priscila
- */
-public class KeyboardLayoutList
-{
-    private ArrayList<KeyboardLayout> layouts = new ArrayList<>();
-    
-    /** 
-    *   Construtor
-    */
-    public KeyboardLayoutList()
-    {
-    
-    }
+/** 
+* Classe com arraylist de teclados
+* 
+* @author marcella e priscila
+*/
 
-    /** 
-    *   Get da lista de layouts
-    */
-    public ArrayList<KeyboardLayout> getLayouts()
-    {
-        return layouts;
-    }
+public class KeyboardLayoutList {
 
-    /** 
-    *   Set da lista de layouts
-    */
-    public void setLayouts(ArrayList<KeyboardLayout> layouts)
-    {
-        this.layouts = layouts;
-    }
+	private List<KeyboardLayout> layouts;
 
-    /** 
-    *   Adiciona um novo layout
-    */
-    public void addLayouts(KeyboardLayout novo_layout)
-    {
-	if (layouts.isEmpty())
-        {
-            layouts = new ArrayList<KeyboardLayout>();
-        }
-	layouts.add(novo_layout);
-    }
-
-    /** 
-    *   Procura o teclado pelo nome
-    */
-    public KeyboardLayout getLayoutByName(String nomeLayout)
-    {
-	KeyboardLayout layout = new KeyboardLayout();
-        
-	for (KeyboardLayout keyboardLayout : layouts)
-        {
-            if (keyboardLayout.getModel().equals(nomeLayout))
-            {
-		layout = keyboardLayout;
-		return layout;
-            }
+	/**
+	 * Adiciona teclado individualmente
+	 */
+	public void adiciona(KeyboardLayout keyboardLayout) {
+		if (layouts == null) {
+			layouts = new ArrayList<KeyboardLayout>();
+		}
+		layouts.add(keyboardLayout);
 	}
-	return null;
-    }
 
-    /** 
-    *   Retorna a lista como string
-    */
-    @Override
-    public String toString()
-    {
-        return "KeyboardLayoutList{" + "layouts=" + layouts + '}';
-    }
+	/**
+	 * Retorna um KeyboardLayout de acordo com o nome de entrada
+	 */
+	public KeyboardLayout getLayoutPorNome(String layoutNome) {
+		
+		layoutNome = layoutNome.toUpperCase();
+		KeyboardLayout layout = null;
+		
+		for (KeyboardLayout keyboardLayout : layouts) {
+			if (keyboardLayout.getModelo().equals(layoutNome)) {
+				layout = keyboardLayout;
+			}
+		}
+		return layout;
+	}
 
+	/**
+	 * Retorna lista dos layouts
+	 */
+	public List<KeyboardLayout> getList() {
+		return layouts;
+	}
+
+	public void setList(List<KeyboardLayout> layouts) {
+		if (layouts == null) {
+			layouts = new ArrayList<KeyboardLayout>();
+		}
+		this.layouts = layouts;
+	}
+
+	@Override
+	public String toString() {
+		String string = "";
+		for (KeyboardLayout keyboardLayout : layouts) {
+			string += keyboardLayout.toString();
+		}
+
+		return string;
+	}
 }
