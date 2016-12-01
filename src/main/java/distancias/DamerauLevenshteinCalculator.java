@@ -42,20 +42,20 @@ public class DamerauLevenshteinCalculator extends IDistanceCalculator {
 		for (int i = 1; i <= array_palavra_um.length(); i++) {
 			for (int j = 1; j <= array_palavra_dois.length(); j++) {
 
-				deleção = matriz_calcular_distancia[i - 1][j] + layout.getInsertDeleteDistance();
-				inserção = matriz_calcular_distancia[i][j - 1] + layout.getInsertDeleteDistance();
+				deleção = matriz_calcular_distancia[i - 1][j] + layout.getDistanciaInsercaoDelecao();
+				inserção = matriz_calcular_distancia[i][j - 1] + layout.getDistanciaInsercaoDelecao();
 				substituição = matriz_calcular_distancia[i - 1][j - 1] + ((array_palavra_um.charAt(i - 1) == array_palavra_dois.charAt(j - 1)) ? 0
-						: layout.getRelativeDistance(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 1)));
+						: layout.getDistanciaRelativa(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 1)));
 
 				// Verifica se é transponivel - Damerau
-				if (isTransposable(array_palavra_um, array_palavra_dois, i, j)) {
+				if (isTransponivel(array_palavra_um, array_palavra_dois, i, j)) {
 					transposição = matriz_calcular_distancia[i - 2][j - 2]
-							+ layout.getNominalDistance(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 2));
+							+ layout.getDistanciaNominal(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 2));
 
-					matriz_calcular_distancia[i][j] = lowestValue(deleção, inserção, substituição, transposição);
+					matriz_calcular_distancia[i][j] = DamerauLevenshteinCalculator.this.menorValor(deleção, inserção, substituição, transposição);
 
 				} else {
-					matriz_calcular_distancia[i][j] = lowestValue(deleção, inserção, substituição);
+					matriz_calcular_distancia[i][j] = menorValor(deleção, inserção, substituição);
 				}
 			}
 		}
@@ -65,7 +65,7 @@ public class DamerauLevenshteinCalculator extends IDistanceCalculator {
 	/**
 	 * Verifica se há troca de letra com a letra seguinte
 	 */
-	private boolean isTransposable(CharSequence lhs, CharSequence rhs, int i, int j) {
+	private boolean isTransponivel(CharSequence lhs, CharSequence rhs, int i, int j) {
 
 		return ((i > 1) && (j > 1) && (lhs.charAt(i - 1) == rhs.charAt(j - 2))
 				&& (lhs.charAt(i - 2) == rhs.charAt(j - 1)));
@@ -74,7 +74,7 @@ public class DamerauLevenshteinCalculator extends IDistanceCalculator {
 	/**
 	 * Calcula o menor valor entre deleção, inserção e substituição
 	 */
-	private double lowestValue(double deletion, double insertion, double substitution) {
+	private double menorValor(double deletion, double insertion, double substitution) {
 
 		double min = (deletion < insertion) ? deletion : insertion;
 		min = (min < substitution) ? min : substitution;
@@ -87,11 +87,11 @@ public class DamerauLevenshteinCalculator extends IDistanceCalculator {
 	 * Calcula o menor valor entre deleção, inserção , substituição e troca pela
 	 * letra seguinte
 	 */
-	private double lowestValue(double deletion, double insertion, double substitution, double transposition) {
-		double minor = (deletion < insertion) ? deletion : insertion;
-		minor = (minor < substitution) ? minor : substitution;
-		minor = (minor < transposition) ? minor : transposition;
-		return minor;
+	private double menorValor(double delecao, double insercao, double substituicao, double transposicao) {
+		double menor = (delecao < insercao) ? delecao : insercao;
+		menor = (menor < substituicao) ? menor : substituicao;
+		menor = (menor < transposicao) ? menor : transposicao;
+		return menor;
 
 	}
 
