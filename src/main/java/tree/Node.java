@@ -1,139 +1,84 @@
-
 package tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
 import distancias.IDistanceCalculator;
 
 /**
- *
- *  Classe que define os nós da BKTree.
+ * Classe que define os nós da BKTree.
  * 
- *  @author marcella e priscila
+ * @author marcella e priscila
+ *
  */
-public class Node implements Comparable<Node>
-{
-    private final String word;
-    private final Map<Integer, Node> children = new HashMap<Integer, Node>();
-    private int distance;
 
-    public Node(String palavra)
-    {
-	this.word = palavra;
-    }
+public class Node {
 
-    public int getDistance()
-    {
-	return distance;
-    }
+	private final String palavra;
+	private final Map<Integer, Node> filhos;
 
-    /**
-     * Pega o filho na posição distance no hashMap
-     */
-    public Node filhosNumaDistancia(int distancia)
-    {
-	return children.get(distancia);
-    }
+	public Node(String palavra) {
+		this.palavra = palavra;
+		this.filhos = new HashMap<Integer, Node>();
 
-    /**
-     * Método usado pela árvore para adicionar o nó na posição do hash
-     */
-    public void addChildNode(int position, Node childNode)
-    {
-	children.put(position, childNode);
-    }
-
-    /**
-     * 
-     */
-    public List<String> search(String node, int maxDistance, IDistanceCalculator calculator)
-    {
-	List<String> compatibleWord = new ArrayList<String>();
-	this.distance = (int) calculator.distance(word, node);
-
-        if (distance <= maxDistance)
-        {
-            compatibleWord.add(word);
 	}
 
-	if (children.size() == 0)
-        {
-            return compatibleWord;
+        /**
+	 * Pega o filho na posição distanciaEntrePalavras no hashMap
+	 */
+	public String getPalavra() {
+		return palavra;
 	}
 
-	for (int i = Math.max(1, distance - maxDistance); i <= distance + maxDistance; i++)
-        {
-            Node child = children.get(i);
-            if (child != null)
-            {
-		compatibleWord.addAll(child.search(node, maxDistance, calculator));
-            }
-	}
-	return compatibleWord;
-    }
-
-    /**
-     * Incompleto
-     */
-    public BurkhardKellerTreeSearchResult search2(String no, int maxDistance, IDistanceCalculator calculator)
-    {
-	BurkhardKellerTreeSearchResult compatibleWord = new BurkhardKellerTreeSearchResult(maxDistance);
-        this.distance = (int) Math.round(calculator.distance(word, no));
-	
-        if (distance <= maxDistance)
-        {
-            compatibleWord.add(word);
+	/**
+	 * Pega o filho na posição distanciaEntrePalavras no hashMap
+	 */
+	public Node filhoNumaDistancia(int distancia) {
+		return filhos.get(distancia);
 	}
 
-	if (children.size() == 0)
-        {
-            return compatibleWord;
+	/**
+	 * Método usado pela árvore para adicionar o nó na posição do hash
+	 */
+	public void adicionarNoFilho(int posicao, Node Nofilho) {
+		filhos.put(posicao, Nofilho);
 	}
 
-	for (int i = Math.max(1, distance - maxDistance); i <= distance + maxDistance; i++)
-        {
-            Node child = children.get(i);
-            if (child != null)
-            {
-		// TODO
-		/*
-                * compatibleWord.add(child.search(no, maxDistance,
-		 * calculator));
-		 */
-            }
-	}
-        return compatibleWord;
-    }
+	/**
+	 * Busca por palavras na árvore
+	 */
+	public ArrayList<Palavra> busca(String no, int distanciaMaxima, IDistanceCalculator calculator) {
 
-    /** 
-    *   
-    */
-    public boolean equals(Node node)
-    {
-	return word.equals(node.word);
-    }
+		ArrayList<Palavra> palavraCompativel = new ArrayList<Palavra>();
 
-    /** 
-    *   
-    */
-    public String getWord()
-    {
-	return word;
-    }
+		double distancia = (int) calculator.distanciaEntrePalavras(palavra, no);
 
-    /** 
-    *   
-    */
-    public int compareTo(Node node)
-    {
-	if (this.distance < node.getDistance()) {
-            return -1;
+		double modificador = 1;
+
+		if (!calculator.isKeyboardLayoutNeutro()) {
+			modificador = 100;
+		}
+
+		distancia = distancia * modificador;
+		distanciaMaxima = (int) (distanciaMaxima * modificador);
+
+		if (distancia <= distanciaMaxima) {
+			palavraCompativel.add(new Palavra(palavra, distancia / modificador));
+		}
+
+		if (filhos.size() == 0) {
+			return palavraCompativel;
+		}
+
+		for (int i = Math.max(1, (int) distancia - distanciaMaxima); i <= distancia + distanciaMaxima; i++) {
+
+			Node filho = filhos.get(i);
+			if (filho != null) {
+				palavraCompativel.addAll(filho.busca(no, distanciaMaxima / (int) modificador, calculator));
+			}
+		}
+		return palavraCompativel;
+
 	}
-	if (this.distance > node.getDistance()) {
-            return 1;
-	}
-	return 0;
-    }
 }
