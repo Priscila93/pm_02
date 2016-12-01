@@ -42,12 +42,12 @@ public class LevenshteinCalculator extends IDistanceCalculator {
 		for (int i = 1; i <= array_palavra_um.length(); i++) {
 			for (int j = 1; j <= array_palavra_dois.length(); j++) {
 
-				eliminação = matriz_calcular_distancia[i - 1][j] + layout.getInsertDeleteDistance();
+				eliminação = matriz_calcular_distancia[i - 1][j] + layout.getDistanciaInsercaoDelecao();
 
-				inserção = matriz_calcular_distancia[i][j - 1] + layout.getInsertDeleteDistance();
+				inserção = matriz_calcular_distancia[i][j - 1] + layout.getDistanciaInsercaoDelecao();
 
 				substituição = matriz_calcular_distancia[i - 1][j - 1] + ((array_palavra_um.charAt(i - 1) == array_palavra_dois.charAt(j - 1)) ? 0
-						: layout.getRelativeDistance(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 1)));
+						: layout.getDistanciaRelativa(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 1)));
 
 				matriz_calcular_distancia[i][j] = menorValor(eliminação, inserção, substituição);
 			}
