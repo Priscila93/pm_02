@@ -1,80 +1,39 @@
-
 package tree;
 
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
- *
- *  Classe que...
+ * Árvore de ordenação
  * 
- *  @author marcella e priscila
+ * @author marcella e priscila
+ *
  */
-public class BurkhardKellerTreeSearchResult
-{
-    TreeSet<Node> nodes;
-    private int lenght;
-    private int numberOfNodes;
+public class BurkhardKellerTreeSearchResult {
 
-    /** 
-    *   
-    */
-    public BurkhardKellerTreeSearchResult(int lenght)
-    {
-	this.lenght = lenght;
-	numberOfNodes = 0;
-	nodes = new TreeSet<Node>();
-    }
+	private ArrayList<Palavra> palavras;
 
-    /** 
-    *   
-    */
-    public Node getWord(int position)
-    {
-	int i = 0;
-	Node node = null;
+	public BurkhardKellerTreeSearchResult(ArrayList<Palavra> palavras) {
+		this.palavras = palavras;
 
-        for (Iterator iterator = nodes.iterator(); iterator.hasNext();)
-        {
-            i++;
-            if (position == i)
-            {
-		node = nodes.iterator().next();
-            }
+		for (Palavra palavra : palavras) {
+			System.out.println(palavra.getPalavra());
+		}
+		Collections.sort(palavras);
+
 	}
-	return node;
-    }
 
-    /**
-     * 
-     */
-    public double getDistance(int position)
-    {
-	return (Double) null;
-    }
-
-    /**
-     * Adiciona no
-     */
-    public void addNode(Node node)
-    {
-	if (numberOfNodes < lenght) {
-            numberOfNodes++;
+        /** 
+        * get da palavra
+        */
+	public String getPalavra(int posicao) {
+		return palavras.get(posicao).getPalavra();
 	}
-        else if (node.getDistance() < nodes.last().getDistance())
-        {
-            nodes.remove(nodes.last());
-            nodes.add(node);
+/** 
+        * get da distancia
+        */
+	public double getDistancia(int posicao) {
+		return palavras.get(posicao).getDistancia();
 	}
-    }
 
-    /**
-     * Adiciona no
-     */
-    public void add(String word)
-    {
-	Node node = new Node(word);
-	addNode(node);
-    }
 }
-
