@@ -1,72 +1,71 @@
-
 package distancias;
 
-import Teclado.KeyboardLayout;
+import teclado.KeyboardLayout;
 
 /**
  *
- *  Classe que...
+ *  Classe que calcula a distância Levenshtein por meio de um layout
  * 
  *  @author marcella e priscila
  */
-public class LevenshteinCalculator
-{
-    public void LevenshteinCalculator(KeyboardLayout layout)
-    {
-        
-    }
+public class LevenshteinCalculator extends IDistanceCalculator {
+	KeyboardLayout layout;
 
-    /*Calcula distância entre palavras pelo algoritmo de LevenshteinCalculator:
+	public LevenshteinCalculator(KeyboardLayout layout) {
+		this.layout = layout;
+	}
+
+	/**
+	 * Calcula distância entre palavras pelo algoritmo de LevenshteinCalculator:
         Essa distância é calculada pelo mínimo de operações para transformar uma palavra na outra.
-        As operações consideradas nesse algoritmo são: inserir, deletar ou substituir um caracter.*/
-    public int DistanciaEntrePalavras(String palavra_um, String palavra_dois)
-    {
-        char[] array_palavra_um = palavra_um.toUpperCase().toCharArray();
-        char[] array_palavra_dois = palavra_dois.toUpperCase().toCharArray();
-        
-        int tamanho_palavra_um = palavra_um.length ();
-        int tamanho_palavra_dois = palavra_dois.length ();
-        
-        if (tamanho_palavra_um == 0)
-        {
-            return tamanho_palavra_dois;
-        }
-        if (tamanho_palavra_dois == 0)
-        {
-            return tamanho_palavra_um;
-        }
+        As operações consideradas nesse algoritmo são: inserção, eliminação ou substituição um caracter.
+	 */
+	public double distanciaEntrePalavras(String palavra_um, String palavra_dois) {
 
-        int[][] matriz_calcular_distancia = new int[array_palavra_um.length + 1][array_palavra_dois.length + 1];
-        
-        int custo = 0;
+		CharSequence array_palavra_um = palavra_um;
+		CharSequence array_palavra_dois = palavra_dois;
 
-        for (int x = 0; x < array_palavra_um.length + 1; x++)
-        {
-            matriz_calcular_distancia[x][0] = x;
-        }
-        for (int y = 0; y < array_palavra_dois.length + 1; y++)
-        {
-            matriz_calcular_distancia[0][y] = y;
-        }
+		double[][] matriz_calcular_distancia = new double[array_palavra_um.length() + 1][array_palavra_dois.length() + 1];
 
-        for (int x = 1; x < array_palavra_um.length + 1; x++)
-        {
-            for (int y = 1; y < array_palavra_dois.length + 1; y++)
-            {
-                custo = 1;
-                if(array_palavra_um[x - 1] == array_palavra_dois[y - 1])
-                {
-                    custo = 0;
-                }
-                int deletar = matriz_calcular_distancia[x - 1][y] + 1;
-                int inserir = matriz_calcular_distancia[x][y - 1] + 1;
-                int substituir = matriz_calcular_distancia[x - 1][y - 1] + custo;
-                matriz_calcular_distancia[x][y] = Math.min(deletar, Math.min(inserir, substituir));
-            }
-        }
+		for (int i = 0; i <= array_palavra_um.length(); i++) {
+			matriz_calcular_distancia[i][0] = i;
+		}
 
-        int resultado = matriz_calcular_distancia[array_palavra_um.length][array_palavra_dois.length];
+		for (int j = 1; j <= array_palavra_dois.length(); j++) {
+			matriz_calcular_distancia[0][j] = j;
 
-        return resultado;
-    }    
+		}
+		double eliminação;
+		double inserção;
+		double substituição;
+
+		for (int i = 1; i <= array_palavra_um.length(); i++) {
+			for (int j = 1; j <= array_palavra_dois.length(); j++) {
+
+				eliminação = matriz_calcular_distancia[i - 1][j] + layout.getInsertDeleteDistance();
+
+				inserção = matriz_calcular_distancia[i][j - 1] + layout.getInsertDeleteDistance();
+
+				substituição = matriz_calcular_distancia[i - 1][j - 1] + ((array_palavra_um.charAt(i - 1) == array_palavra_dois.charAt(j - 1)) ? 0
+						: layout.getRelativeDistance(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 1)));
+
+				matriz_calcular_distancia[i][j] = menorValor(eliminação, inserção, substituição);
+			}
+		}
+		return matriz_calcular_distancia[array_palavra_um.length()][array_palavra_dois.length()];
+	}
+
+	/**
+	 * Calcula o menor valor entre eliminação, inserção e substituição
+	 */
+	private double menorValor(double deletar, double inserir, double substituir) {
+		double minimo = (deletar < inserir) ? deletar : inserir;
+		return (minimo < substituir) ? minimo : substituir;
+
+	}
+
+	public boolean isKeyboardLayoutNeutro() {
+		return layout.isNeutro();
+	}
+
 }
