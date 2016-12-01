@@ -1,102 +1,102 @@
-
 package distancias;
 
-import Teclado.KeyboardLayout;
+import teclado.KeyboardLayout;
 
 /**
  *
- *  Classe define a calculadora de Damerau - Levenshtein
+ *  Classe que calcula a distância Damerau-Levenshtein por meio de um layout
  * 
  *  @author marcella e priscila
  */
-public class DamerauLevenshteinCalculator
-{
-    private KeyboardLayout layout;
 
-    public DamerauLevenshteinCalculator(KeyboardLayout layout)
-    {
-	this.layout = layout;
-    }
+public class DamerauLevenshteinCalculator extends IDistanceCalculator {
 
-    /**
-     * Implementação do calculo da distancia com Damerou-Levenshtein
-     */
-    public double distance(String palavraUm, String palavraDois)
-    {
-    	CharSequence sequenciaPalavraUm = palavraUm;
-	CharSequence sequenciaPalavraDois = palavraDois;
-        
-        double delecao = 0.0;
-	double insercao = 0.0;
-	double substituicao = 0.0;
-	double transposicao = 0.0;
+	private KeyboardLayout layout;
 
-        double[][] distance = new double[sequenciaPalavraUm.length() + 1][sequenciaPalavraDois.length() + 1];
-        
-	for (int i = 0; i <= sequenciaPalavraUm.length(); i++)
-        {
-            distance[i][0] = i;
+	public DamerauLevenshteinCalculator(KeyboardLayout layout) {
+		this.layout = layout;
 	}
 
-	for (int j = 1; j <= sequenciaPalavraDois.length(); j++)
-        {
-            distance[0][j] = j;
-	}
+	/**
+	 * Implementação do calculo da distancia com Damerau-Levenshtein
+	 */
+	public double distanciaEntrePalavras(String palavra_um, String palavra_dois) {
 
-	for (int i = 1; i <= sequenciaPalavraUm.length(); i++)
-        {
-            for (int j = 1; j <= sequenciaPalavraDois.length(); j++)
-            {
-		delecao = distance[i - 1][j] + layout.getInsertDeleteDistance();
-		insercao = distance[i][j - 1] + layout.getInsertDeleteDistance();
-		substituicao = distance[i - 1][j - 1] + ((sequenciaPalavraUm.charAt(i - 1) == sequenciaPalavraDois.charAt(j - 1)) ? 0 : layout.getRelativeDistance(sequenciaPalavraUm.charAt(i - 1), sequenciaPalavraDois.charAt(j - 1)));
+		CharSequence array_palavra_um = palavra_um;
+		CharSequence array_palavra_dois = palavra_dois;
+		double[][] matriz_calcular_distancia = new double[array_palavra_um.length() + 1][array_palavra_dois.length() + 1];
 
-		// Verifica se é transponivel - Damerou
-		if (isTransposable(sequenciaPalavraUm, sequenciaPalavraDois, i, j))
-                {
-                    transposicao = distance[i - 2][j - 2] + layout.getNominalDistance(sequenciaPalavraUm.charAt(i - 1), sequenciaPalavraDois.charAt(j - 2));
-                    distance[i][j] = lowestValue(delecao, insercao, substituicao, transposicao);
+		for (int i = 0; i <= array_palavra_um.length(); i++) {
+			matriz_calcular_distancia[i][0] = i;
 		}
-                else
-                {
-                    distance[i][j] = lowestValue(delecao, insercao, substituicao);
+
+		for (int j = 1; j <= array_palavra_dois.length(); j++) {
+			matriz_calcular_distancia[0][j] = j;
+
 		}
-            }
+		double deleção;
+		double inserção;
+		double substituição;
+		double transposição;
+
+		for (int i = 1; i <= array_palavra_um.length(); i++) {
+			for (int j = 1; j <= array_palavra_dois.length(); j++) {
+
+				deleção = matriz_calcular_distancia[i - 1][j] + layout.getInsertDeleteDistance();
+				inserção = matriz_calcular_distancia[i][j - 1] + layout.getInsertDeleteDistance();
+				substituição = matriz_calcular_distancia[i - 1][j - 1] + ((array_palavra_um.charAt(i - 1) == array_palavra_dois.charAt(j - 1)) ? 0
+						: layout.getRelativeDistance(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 1)));
+
+				// Verifica se é transponivel - Damerau
+				if (isTransposable(array_palavra_um, array_palavra_dois, i, j)) {
+					transposição = matriz_calcular_distancia[i - 2][j - 2]
+							+ layout.getNominalDistance(array_palavra_um.charAt(i - 1), array_palavra_dois.charAt(j - 2));
+
+					matriz_calcular_distancia[i][j] = lowestValue(deleção, inserção, substituição, transposição);
+
+				} else {
+					matriz_calcular_distancia[i][j] = lowestValue(deleção, inserção, substituição);
+				}
+			}
+		}
+		return matriz_calcular_distancia[array_palavra_um.length()][array_palavra_dois.length()];
 	}
-	return distance[sequenciaPalavraUm.length()][sequenciaPalavraDois.length()];
-    }
 
-    /**
-     * Verifica se troca de letra com a letra seguinte
-     */
-    private boolean isTransposable(CharSequence lhs, CharSequence rhs, int i, int j)
-    {
-	return ((i > 1) && (j > 1) && (lhs.charAt(i - 1) == rhs.charAt(j - 2)) && (lhs.charAt(i - 2) == rhs.charAt(j - 1)));
-    }
+	/**
+	 * Verifica se há troca de letra com a letra seguinte
+	 */
+	private boolean isTransposable(CharSequence lhs, CharSequence rhs, int i, int j) {
 
-    /**
-     * Calcula o menor valor entre deleção, inserção e substituição
-     */
-    private double lowestValue(double deletion, double insertion, double substitution)
-    {
-	double min = (deletion < insertion) ? deletion : insertion;
+		return ((i > 1) && (j > 1) && (lhs.charAt(i - 1) == rhs.charAt(j - 2))
+				&& (lhs.charAt(i - 2) == rhs.charAt(j - 1)));
+	}
 
-        min = (min < substitution) ? min : substitution;
+	/**
+	 * Calcula o menor valor entre deleção, inserção e substituição
+	 */
+	private double lowestValue(double deletion, double insertion, double substitution) {
 
-	return min;
-    }
+		double min = (deletion < insertion) ? deletion : insertion;
+		min = (min < substitution) ? min : substitution;
 
-    /**
-     * Calcula o menor valor entre deleção, inserção , substituição e troca pela letra seguinte
-     */
-    private double lowestValue(double deletion, double insertion, double substitution, double transposition)
-    {
-	double minor = (deletion < insertion) ? deletion : insertion;
+		return min;
 
-	minor = (minor < substitution) ? minor : substitution;
+	}
 
-	minor = (minor < transposition) ? minor : transposition;
+	/**
+	 * Calcula o menor valor entre deleção, inserção , substituição e troca pela
+	 * letra seguinte
+	 */
+	private double lowestValue(double deletion, double insertion, double substitution, double transposition) {
+		double minor = (deletion < insertion) ? deletion : insertion;
+		minor = (minor < substitution) ? minor : substitution;
+		minor = (minor < transposition) ? minor : transposition;
+		return minor;
 
-	return minor;
-    }
+	}
+
+	public boolean isKeyboardLayoutNeutro() {
+		return layout.isNeutro();
+	}
+
 }
