@@ -1,33 +1,55 @@
+
 package Teclado;
 
-public class OrderedPair {
+/**
+ *
+ *  Classe que...
+ * 
+ *  @author marcella e priscila
+ */
+public class OrderedPair
+{
+    private double largura;
+    private double altura;
 
-	private double x;
-	private double y;
+    /**
+     * Par ordenado com largura e altura da posição de uma tecla(letra)
+     */
+    public OrderedPair(double largura, double altura)
+    {
+	this.largura = largura;
+	this.altura = altura;
+    }
 
-	/**
-	 * Par ordenado com largura e altura da posição de uma tecla(letra)
-	 */
-	public OrderedPair(double x, double y) {
-		this.x = x;
-		this.y = y;
-	}
+    /** 
+    *   
+    */
+    public double getLargura()
+    {
+	return largura;
+    }
 
-	public double getX() {
-		return x;
-	}
+    /** 
+    *   
+    */
+    public void setLargura(double largura)
+    {
+    	this.largura = largura;
+    }
 
-	public void setX(double x) {
-		this.x = x;
-	}
+    /** 
+    *   
+    */
+    public double getAltura()
+    {
+	return altura;
+    }
 
-	public double getY() {
-		return y;
-	}
-
-	public void setY(double y) {
-		this.y = y;
-	}
-
+    /** 
+    *   
+    */
+    public void setAltura(double altura)
+    {
+	this.altura = altura;
+    }
 }
-

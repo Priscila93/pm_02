@@ -1,39 +1,55 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Teclado;
 
-/**
- *
- * @author marce
- */
-public class Line {
-    private String linha_caracteres;
+/** 
+* 
+*   Classe que define a linha lida no arquivo xml.
+*   Sendo definida pelos caracteres presentes em uma linha do teclado e pelos offsets presentes.
+* 
+*   @author marcella e priscila
+*/
+public class Line
+{
+    private String linhaCaracteres;
     private double offset;
 
-    //Construtor
-    public Line(){
+    /** 
+    *   Construtor
+    */
+    public Line()
+    {
+        
     }
 
-    //Get dos caracteres
-    public String getLinha_caracteres(){
-	return linha_caracteres;
+    /** 
+    *   Get dos caracteres
+    */
+    public String getLinhaCaracteres()
+    {
+	return linhaCaracteres;
     }
 
-    //Set dos caracteres
-    public void setLinha_caracteres(String linha_caracteres){
-	this.linha_caracteres = linha_caracteres;
+    /** 
+    *   Set dos caracteres
+    */
+    public void setLinhaCaracteres(String linha_caracteres)
+    {
+	this.linhaCaracteres = linha_caracteres;
     }
 
-    //Get do offset
-    public double getOffset(){
+    /** 
+    *   Get do offset
+    */
+    public double getOffset()
+    {
 	return offset;
     }
 
-    //Set do offset
-    public void setOffset(double offset){
+    /** 
+    *   Set do offset
+    */
+    public void setOffset(double offset)
+    {
 	this.offset = offset;
     }
 }
