@@ -1,7 +1,5 @@
-
 package tree;
 
-import java.util.List;
 import distancias.IDistanceCalculator;
 
 /**
@@ -10,92 +8,66 @@ import distancias.IDistanceCalculator;
  * 
  *  @author marcella e priscila
  */
+
 public class BurkhardKellerTree {
-    private Node root;
-    private IDistanceCalculator calculator;
-    private BurkhardKellerTreeSearchResult result;
 
-    public BurkhardKellerTree(IDistanceCalculator calculator)
-    {
-	this.calculator = calculator;
-    }
+	private Node raiz;
 
-    public BurkhardKellerTree() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	private IDistanceCalculator calculator;
 
-    /**
-     * Adiciona no partir de string passada e adiciona o no arvore
-     */
-    public void addNode(String no)
-    {
-	if (no == null || no.isEmpty())
-        {
-		
-        }
-        else
-        {
-            Node newNode = new Node(no);
-            if (root == null)
-            {
-		root = newNode;
-            }
-            else
-            {
-		add(root, newNode);
-            }
+	public BurkhardKellerTree(IDistanceCalculator calculator) {
+		this.calculator = calculator;
+	}
+
+	/**
+	 * Adiciona no a partir de string passada e adiciona o no na árvore
+	 */
+	public void adicionaNo(String no) {
+
+		if (no == null || no.isEmpty()) {
+		} else {
+			Node novoNo = new Node(no);
+			if (raiz == null) {
+				raiz = novoNo;
+			} else {
+				adiciona(raiz, novoNo);
+			}
+		}
+	}
+
+	/**
+	 * Adiciona nó na árvore de acordo com a distancia do DistanceCalculator
+	 */
+	private void adiciona(Node srcNode, Node novoNo) {
+
+		if (srcNode.equals(novoNo)) {
+			return;
+		}
+
+		double distance = calculator.distanciaEntrePalavras(srcNode.getPalavra(), novoNo.getPalavra());
+
+		if (!calculator.isKeyboardLayoutNeutro()) {
+			int modificador = 100;
+			distance = distance * modificador;
+		}
+
+		Node noBk = srcNode.filhoNumaDistancia((int) distance);
+		if (noBk == null) {
+			srcNode.adicionarNoFilho((int) distance, novoNo);
+		}
+
+		// senao adiciona nó como filho
+		else {
+			adiciona(noBk, novoNo);
+		}
+	}
+
+	/**
+	 * Funcao para busca de nó com uma distancia máxima
+	 */
+	public BurkhardKellerTreeSearchResult busca(String palavra, int distanciaMaximaPermitida, int maxWords) {
+		return new BurkhardKellerTreeSearchResult(raiz.busca(palavra, distanciaMaximaPermitida, calculator));
 
 	}
-    }
 
-    /**
-     * Adiciona lista de palavras na árvore
-     */
-    public void addNodeList(List<String> nodes)
-    {
-	for (String node : nodes)
-        {
-            addNode(node);
-	}
-    }
-
-    /**
-     * Adiciona nó na árvore de acordo com a distancia do DistanceCalculator
-     */
-    private void add(Node srcNode, Node newNode)
-    {
-        if (srcNode.equals(newNode))
-        {
-            return;
-	}
-	int distance = (int) Math.round(calculator.distance(srcNode.getWord(), newNode.getWord()));
-	Node bkNode = srcNode.filhosNumaDistancia(distance);
-	if (bkNode == null)
-        {
-            srcNode.addChildNode(distance, newNode);
-	}
-	else
-        {
-            // senao adiciona nó como filho
-            add(bkNode, newNode);
-	}
-    }
-
-    /**
-     * Funcao para busca de nó com uma distancia máxima
-     */
-    public List<String> search(String word, int distanciaMaximaPermitida, IDistanceCalculator calculator) {
-	return root.search(word.toUpperCase(), distanciaMaximaPermitida, calculator);
-    }
-
-    /**
-     * Busca que devolve arvore resultado da busca
-    */
-    public BurkhardKellerTreeSearchResult search(String word, int distanciaMaxima, int numeroMaximoDePalavras) {
-	return root.search2(word.toUpperCase(), distanciaMaxima, calculator);
-    }
-
-    public void adicionarPalavra(String get) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
