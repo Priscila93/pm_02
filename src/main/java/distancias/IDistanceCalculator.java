@@ -1,4 +1,3 @@
-
 package distancias;
 
 /**
@@ -7,8 +6,14 @@ package distancias;
  * 
  *  @author marcella e priscila
  */
-public interface IDistanceCalculator
-{
-    public int DistanciaEntrePalavras(String palavra_um, String palavra_dois);
-    public float distance(String word, String word0);
+
+public abstract class IDistanceCalculator {
+	/**
+	 * método abstrato para implementação da distancia
+	 */
+	public abstract double distanciaEntrePalavras(String palavra1, String palavra2);
+
+	public abstract boolean isKeyboardLayoutNeutro();
+
 }
+
