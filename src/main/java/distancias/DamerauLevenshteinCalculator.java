@@ -1,6 +1,6 @@
 package distancias;
 
-import teclado.KeyboardLayout;
+import Teclado.KeyboardLayout;
 
 /**
  *
