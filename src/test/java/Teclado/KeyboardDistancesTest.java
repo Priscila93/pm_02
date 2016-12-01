@@ -30,68 +30,68 @@ public class KeyboardDistancesTest {
 	@Test
 	public void testQwerty()
 	{
-		KeyboardLayout layout = layouts.getLayoutByName("QWERTY");
-		layout.prepareDistances();
-		assertEquals(0.0, layout.getNominalDistance('q', 'q'), 0.001);
+		KeyboardLayout layout = layouts.getLayoutPorNome("QWERTY");
+		layout.preparaDistancia();
+		assertEquals(0.0, layout.getDistanciaNominal('q', 'q'), 0.001);
 		
-		assertEquals(1.0, layout.getNominalDistance('q', 'w'), 0.001);
-		assertEquals(1.0, layout.getNominalDistance('w', 'q'), 0.001);
+		assertEquals(1.0, layout.getDistanciaNominal('q', 'w'), 0.001);
+		assertEquals(1.0, layout.getDistanciaNominal('w', 'q'), 0.001);
 		
-		assertEquals(2.0, layout.getNominalDistance('q', 'e'), 0.001);
-		assertEquals(2.0, layout.getNominalDistance('e', 'q'), 0.001);
+		assertEquals(2.0, layout.getDistanciaNominal('q', 'e'), 0.001);
+		assertEquals(2.0, layout.getDistanciaNominal('e', 'q'), 0.001);
 
-		assertEquals(9.0, layout.getNominalDistance('q', 'p'), 0.001);
-		assertEquals(9.0, layout.getNominalDistance('p', 'q'), 0.001);
+		assertEquals(9.0, layout.getDistanciaNominal('q', 'p'), 0.001);
+		assertEquals(9.0, layout.getDistanciaNominal('p', 'q'), 0.001);
 
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('q', 'a'), 0.001);
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('a', 'q'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('q', 'a'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('a', 'q'), 0.001);
 
-		assertEquals(dist(1.5, 1), layout.getNominalDistance('q', 's'), 0.001);
-		assertEquals(dist(1.5, 1), layout.getNominalDistance('s', 'q'), 0.001);
+		assertEquals(dist(1.5, 1), layout.getDistanciaNominal('q', 's'), 0.001);
+		assertEquals(dist(1.5, 1), layout.getDistanciaNominal('s', 'q'), 0.001);
 
-		assertEquals(dist(8.5, 1), layout.getNominalDistance('q', 'l'), 0.001);
-		assertEquals(dist(8.5, 1), layout.getNominalDistance('l', 'q'), 0.001);
+		assertEquals(dist(8.5, 1), layout.getDistanciaNominal('q', 'l'), 0.001);
+		assertEquals(dist(8.5, 1), layout.getDistanciaNominal('l', 'q'), 0.001);
 
-		assertEquals(dist(1.0, 2), layout.getNominalDistance('q', 'z'), 0.001);
-		assertEquals(dist(1.0, 2), layout.getNominalDistance('z', 'q'), 0.001);
+		assertEquals(dist(1.0, 2), layout.getDistanciaNominal('q', 'z'), 0.001);
+		assertEquals(dist(1.0, 2), layout.getDistanciaNominal('z', 'q'), 0.001);
 
-		assertEquals(dist(2.0, 2), layout.getNominalDistance('q', 'x'), 0.001);
-		assertEquals(dist(2.0, 2), layout.getNominalDistance('x', 'q'), 0.001);
+		assertEquals(dist(2.0, 2), layout.getDistanciaNominal('q', 'x'), 0.001);
+		assertEquals(dist(2.0, 2), layout.getDistanciaNominal('x', 'q'), 0.001);
 
-		assertEquals(dist(7.0, 2), layout.getNominalDistance('q', 'm'), 0.001);
-		assertEquals(dist(7.0, 2), layout.getNominalDistance('m', 'q'), 0.001);
+		assertEquals(dist(7.0, 2), layout.getDistanciaNominal('q', 'm'), 0.001);
+		assertEquals(dist(7.0, 2), layout.getDistanciaNominal('m', 'q'), 0.001);
 
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('w', 'a'), 0.001);
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('a', 'w'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('w', 'a'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('a', 'w'), 0.001);
 
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('w', 's'), 0.001);
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('s', 'w'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('w', 's'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('s', 'w'), 0.001);
 
-		assertEquals(dist(0.0, 2), layout.getNominalDistance('w', 'z'), 0.001);
-		assertEquals(dist(0.0, 2), layout.getNominalDistance('z', 'w'), 0.001);
+		assertEquals(dist(0.0, 2), layout.getDistanciaNominal('w', 'z'), 0.001);
+		assertEquals(dist(0.0, 2), layout.getDistanciaNominal('z', 'w'), 0.001);
 
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('a', 'z'), 0.001);
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('z', 'a'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('a', 'z'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('z', 'a'), 0.001);
 
-		assertEquals(dist(8.0, 2), layout.getNominalDistance('p', 'z'), 0.001);
-		assertEquals(dist(8.0, 2), layout.getNominalDistance('z', 'p'), 0.001);
+		assertEquals(dist(8.0, 2), layout.getDistanciaNominal('p', 'z'), 0.001);
+		assertEquals(dist(8.0, 2), layout.getDistanciaNominal('z', 'p'), 0.001);
 
-		assertEquals(dist(0.5, 1), layout.getNominalDistance('g', 't'), 0.001);
-		assertEquals(dist(1.5, 1), layout.getNominalDistance('a', 'e'), 0.001);
-		assertEquals(dist(1.0, 0), layout.getNominalDistance('b', 'v'), 0.001);
+		assertEquals(dist(0.5, 1), layout.getDistanciaNominal('g', 't'), 0.001);
+		assertEquals(dist(1.5, 1), layout.getDistanciaNominal('a', 'e'), 0.001);
+		assertEquals(dist(1.0, 0), layout.getDistanciaNominal('b', 'v'), 0.001);
 
-		assertEquals(0.25, layout.getInsertDeleteDistance(), 0.001);
-		assertEquals(dist(9.0, 0), layout.getMaximumDistance(), 0.001);
+		assertEquals(0.25, layout.getDistanciaInsercaoDelecao(), 0.001);
+		assertEquals(dist(9.0, 0), layout.getDistanciaMaxima(), 0.001);
 	}
 	
 	@Test
 	public void testDvorak()
 	{
-		KeyboardLayout layout = layouts.getLayoutByName("DVORAK");
-		layout.prepareDistances();
-		assertEquals(dist(3, 1), layout.getNominalDistance('p', 'a'), 0.001);
-		assertEquals(dist(9, 1), layout.getNominalDistance('z', 'a'), 0.001);
-		assertEquals(dist(9.055, 0), layout.getMaximumDistance(), 0.001);
+		KeyboardLayout layout = layouts.getLayoutPorNome("DVORAK");
+		layout.preparaDistancia();
+		assertEquals(dist(3, 1), layout.getDistanciaNominal('p', 'a'), 0.001);
+		assertEquals(dist(9, 1), layout.getDistanciaNominal('z', 'a'), 0.001);
+		assertEquals(dist(9.055, 0), layout.getDistanciaMaxima(), 0.001);
 	}
 	
 	private double dist(double width, double height)
@@ -100,3 +100,4 @@ public class KeyboardDistancesTest {
 	}
     
 }
+
